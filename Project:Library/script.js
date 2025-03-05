@@ -28,6 +28,14 @@ function addBookToLibrary() {
     //add new book object to library array
     myLibrary.push(newBook);
 
+    //clear the form
+    document.getElementById("title").value = '';
+    document.getElementById("author").value = '';
+    document.getElementById("pages").value = '';
+    document.getElementById("read").checked = false; //the uncheck is for the checkbox
+
+    //update the display of the books using the display books function
+    displayBooks();
 }
 
 //set a function to now display the books in the library array via html
@@ -40,9 +48,52 @@ function displayBooks() {
     myLibrary.forEach((Book, index) => {
         //Create a div for each book
         var bookDiv = document.createElement('div');
+        bookDiv.classList.add('book'); //this is for the css styling of the books
         //While it loops and creates a div for each book, adding book into containers with the following text content
         bookDiv.textContent = `${book.title} by ${book.author} with ${book.pages} pages. Read: ${book.read}`;
         //Append the book div to the container
         container.append(bookDiv)
+
+        //Create a button to remove the book
+        var removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove'; //this is the text content of the button that will remove the book
+        removeButton.addEventListener('click', () => removeBook (index)); //this is the event listener for the button to remove the book
+        
+
+
+        //Create a button to change the read status
+
+        //Append the book to container
+
+
+
     })
 }
+
+function removeBook (index) {
+    myLibrary.splice(index, 1); //this removes the book from the library array at index 1
+    displayBooks(); //this updates the display of the books
+}
+
+//Event listener for the form submit button to stop the page from refreshing and to run the addBookToLibrary function
+document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    addBookToLibrary();
+})
+
+function saveLocal() {
+    localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+}
+
+function loadLocal() {
+    var storedBooks = localStorage.getItem('myLibrary'); //this gets the books from local storage
+    if (storedBooks) { //if there are books in local storage when loaded, it will parse and display them
+        myLibrary = JSON.parse(storedBooks);
+        displayBooks();
+    }
+   
+}
+
+
+//load the books that were stored from the local save
+window.onload = loadLocal();
