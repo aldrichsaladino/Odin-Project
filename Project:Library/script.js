@@ -27,6 +27,7 @@ function addBookToLibrary() {
 
     //add new book object to library array
     myLibrary.push(newBook);
+    console.log("Updated Library:", myLibrary);
 
     //clear the form
     document.getElementById("title").value = '';
@@ -59,19 +60,24 @@ function displayBooks() {
         removeButton.textContent = 'Remove'; //this is the text content of the button that will remove the book
         removeButton.addEventListener('click', () => removeBook (index)); //this is the event listener for the button to remove the book
         bookDiv.append(removeButton); //this appends the button to the book div
-
+        console.log("Removing the book from the index", index);
 
         //Create a button to change the read 
         var = toggleReadButton = document.createElement('button');
         toggleReadButton.textContent = 'Toggle Reads'; //this is the text content of the button that will toggle the read status
         toggleReadButton.addEventListener('click', () => {
             book.read = !book.read;
+            console.log("Toggle book status for: ${book.title}")
             displayBooks();
         
         }); //The button will click if its read or not readm, and then display the books
 
         //Append the book to container
         container.append(bookDiv);
+
+        console.log("Displaying books...");
+        console.log("Current Library:", myLibrary);
+
     })
 }
 
