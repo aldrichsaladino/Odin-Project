@@ -46,7 +46,7 @@ function displayBooks() {
     container.innerHTML = ''; //Clears the old content
 
     //Loop through the library array and display each book in the container
-    myLibrary.forEach((Book, index) => {
+    myLibrary.forEach((book, index) => {
         //Create a div for each book
         var bookDiv = document.createElement('div');
         bookDiv.classList.add('book'); //this is for the css styling of the books
@@ -63,17 +63,15 @@ function displayBooks() {
         console.log("Removing the book from the index", index);
 
         //Create a button to change the read 
-        var = toggleReadButton = document.createElement('button');
+        var toggleReadButton = document.createElement('button');
         toggleReadButton.textContent = 'Toggle Reads'; //this is the text content of the button that will toggle the read status
         toggleReadButton.addEventListener('click', () => {
             book.read = !book.read;
-            console.log("Toggle book status for: ${book.title}")
+            console.log(`Toggle book status for: ${book.title}`);
             displayBooks();
         
         }); //The button will click if its read or not readm, and then display the books
 
-        //Append the book to container
-        container.append(bookDiv);
 
         console.log("Displaying books...");
         console.log("Current Library:", myLibrary);
@@ -87,7 +85,7 @@ function removeBook (index) {
 }
 
 //Event listener for the form submit button to stop the page from refreshing and to run the addBookToLibrary function
-document.getElementById('form').addEventListener('submit', function (e) {
+document.getElementById('book-form').addEventListener('submit', function (e) {
     e.preventDefault();
     addBookToLibrary();
 })
@@ -108,3 +106,9 @@ function loadLocal() {
 
 //load the books that were stored from the local save
 window.onload = loadLocal();
+
+// Event listener for the form submit button
+document.getElementById('book-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    addBookToLibrary();
+});
