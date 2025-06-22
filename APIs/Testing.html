@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <img src="#">
+  <button id="refresh_button">Refresh GIF</button>
+
+   <!-- adding search box-->
+    <input type="text" id="search_box" placeholder="Search for a GIF...">
+<script>
+    const img = document.querySelector('img');
+  fetch('https://api.giphy.com/v1/gifs/translate?api_key=BL6CqI8aP8GYG8MOlx21SIvGR2aZzMrY&s=ferarri', {mode: 'cors'})
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+        img.src = response.data.images.original.url;
+    });
+
+    // Search box functionality
+    const searchBox = document.getElementById('search_box');
+
+    searchBox.addEventListener('input', () => {
+        const searchTerm = searchBox.value.trim(); //removes any additional whitepsace with tirm
+        fetchGif(searchTerm || 'ferrari');
+    });
+    // Refresh button functionality
+    const btn = document.getElementById('refresh_button')
+    btn.addEventListener('click',() => {
+        fetch('ferrari', {mode: 'cors'})
+    })
+
+
+
+</script>
+</body>
+</html>
