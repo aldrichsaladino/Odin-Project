@@ -27,6 +27,10 @@
       return response.json();
     })
     .then(function(response) {
+      //include error handling for cases when no GIF is found
+      if(!response.data || !response.data.images || !response.data.images.original) {
+        throw new Error('No GIF found for the search term');
+      }
         img.src = response.data.images.original.url;
         errorMessage.textContent = ''; // Clear any previous error messages
     })
@@ -43,13 +47,14 @@
   fetchGif('ferrari');
 
   //seacrch box functionality
-  searchBox.addEventListener('input', () => {s
+  searchBox.addEventListener('input', () => {
       const searchTerm = searchBox.value.trim(); //removes any additional whitepsace with tirm
       fetchGif(searchTerm || 'ferrari');
   });
 
   // Refresh button functionality
   btn.addEventListener('click',() => {
+    const searchTerm = searchBox.value.trim(); //get the current value of the search box. it should be included since it's withinn the scope of its own box
       fetchGif(searchTerm || 'ferrari'); //search the term or default to 'ferrari'
   });
 
