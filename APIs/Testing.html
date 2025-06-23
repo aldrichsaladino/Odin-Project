@@ -11,30 +11,53 @@
    <!-- adding search box-->
     <input type="text" id="search_box" placeholder="Search for a GIF...">
 <script>
-    const img = document.querySelector('img');
-  fetch('https://api.giphy.com/v1/gifs/translate?api_key=BL6CqI8aP8GYG8MOlx21SIvGR2aZzMrY&s=ferarri', {mode: 'cors'})
+
+  //DOM references
+  const img = document.querySelector('img');
+  const searchBox = document.getElementById('search_box');
+  const btn = document.getElementById('refresh_button')
+  const errorMessage = document.createElement('p');
+
+  //Function to fetch GIF
+  function fetchGif(searchTerm) {
+    const url = `https://api.giphy.com/v1/gifs/translate?api_key=BL6CqI8aP8GYG8MOlx21SIvGR2aZzMrY&s=${searchTerm}`;
+  
+  fetch(url, {mode: 'cors'})
     .then(function(response) {
       return response.json();
     })
     .then(function(response) {
         img.src = response.data.images.original.url;
-    });
-
-    // Search box functionality
-    const searchBox = document.getElementById('search_box');
-
-    searchBox.addEventListener('input', () => {
-        const searchTerm = searchBox.value.trim(); //removes any additional whitepsace with tirm
-        fetchGif(searchTerm || 'ferrari');
-    });
-    // Refresh button functionality
-    const btn = document.getElementById('refresh_button')
-    btn.addEventListener('click',() => {
-        fetch('ferrari', {mode: 'cors'})
+        errorMessage.textContent = ''; // Clear any previous error messages
     })
+    .catch(error => {
+      img.removeAttribute('src'); // Remove the src attribute if there's an error
+      errorMessage.textContent = 'Error';
+      console.error(error);
+    })
+  
+  }
 
 
+  //default fetch
+  fetchGif('ferrari');
 
+  //seacrch box functionality
+  searchBox.addEventListener('input', () => {s
+      const searchTerm = searchBox.value.trim(); //removes any additional whitepsace with tirm
+      fetchGif(searchTerm || 'ferrari');
+  });
+
+  // Refresh button functionality
+  btn.addEventListener('click',() => {
+      fetchGif(searchTerm || 'ferrari'); //search the term or default to 'ferrari'
+  });
+
+    //need to make handle errors and cases when there is no gif found
+    errorMessage.style.color = 'red';
+    document.body.insertBefore(errorMessage,img); //this will show the error above tthe image area
+
+  
 </script>
 </body>
 </html>
