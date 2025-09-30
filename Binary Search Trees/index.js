@@ -1,9 +1,38 @@
 // Node & Tree - spawn point
 //Build a Node class/factory. It should have an attribute for the data it stores as well as its left and right children.
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+    }
+}
 
 //Build a Tree class/factory which accepts an array when initialized. The Tree class should have a root attribute, which uses the return value of buildTree which you’ll write next.
+class Tree {
+    constructor(array) {
+        this.root = this.buildTree(array);
+    }
 
-//Write a buildTree(array) function that takes an array of data (e.g., [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) and turns it into a balanced binary tree full of Node objects appropriately placed (don’t forget to sort and remove duplicates!). The buildTree function should return the level-0 root node.
+    buildTree(array) {
+        const arr = [...new Set(array)].sort((a, b) => a - b); // unique & sorted
+        if (arr.length === 0) {
+            return null;
+        }
+        return this.balancedBinarySearchTree(arr, 0, arr.length - 1);
+    }
+
+    balancedBinarySearchTree(arr, start, end) {
+        if (start > end) {
+            return null;
+        }
+        const mid = Math.floor((start + end) / 2);
+        const node = new Node(arr[mid]);
+        node.left = this.balancedBinarySearchTree(arr, start, mid - 1);
+        node.right = this.balancedBinarySearchTree(arr, mid + 1, end);
+        return node;
+    }
+}
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
   if (node === null) {
@@ -18,9 +47,85 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 };
 
+//test 1
+const test = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+prettyPrint(test.root); //tests using prettyprint function that visualizes the tree structure
+console.log(test.root.data)
+
 
 //Write insert(value) and deleteItem(value) functions that insert/delete the given value. You’ll have to deal with several cases for delete, such as when a node has children or not. If you need additional resources, check out these two articles on inserting and deleting, or this video on BST inserting/removing with several visual examples.
+function insert(value):
+// why? If the tree is empty, the thenew node becomes the root
+    if (this.root === null) {
+        this.root = new Node(value);
+        return;
+    }
 
+    //policy 2; duplictates are not allowed. if the current node is the same as the root, do nothing
+    currentNode = this.root;
+    while(true) {
+        if (value === currentNode.data) {
+            return; // no duplicates allowed
+        }
+    }
+    //policy 3; if the value is less than the current node, go left
+    if(value < currentNode.data) {
+        if(currentNode.left === null) {
+            currentNode.left = new Node(value);
+            return;
+        }
+    }
+
+    //policy 4; if the value is greater than the current node, go right
+    if(value > currentNode.data) {
+        if(currentNode.right === null) {
+            currentNode.right = new Node(value);
+            return;
+        }
+        currentNode = currentNode.right;
+    }
+
+//Delete function
+function deleteItem(value) {
+    currentNode = this.root;
+    if(currentNode === null) {
+        return null; // tree is empty
+    }
+
+    if (value < currentNode.data) {
+        currentNode.left = deleteItem(currentNode.left, value);
+        return currentNode;
+    } else if (value > currentNode.data) {
+        currentNode.right = deleteItem(currentNode.right, value);
+        return currentNode;
+    } else {
+        //Cases - no child, one child, 2 child
+        //no child
+        if(currentNode.left === null && currentNode.right === null) {
+            return null;
+        }
+
+        //one child
+        if(currentNode.left = null) {
+            return currentNode.right;
+        } else if (currentNode.right === null) {
+            return currentNode.left;
+        }
+        //two children
+        successor = findMin(currentNode.right);
+        currentNode.data = successor.data;
+        currentNode.right = deleteItem(currentNode.right, successor.data);
+        return currentNode;
+    }
+
+}
+
+function findMin(node) {
+    while(node.left !== null) {
+        node = node.left;
+    }
+    return node;
+}
 
 //Write a find(value) function that returns the node with the given value.
 
